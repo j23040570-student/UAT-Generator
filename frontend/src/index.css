@@ -1,0 +1,18 @@
+
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #10111b;
+  background: #f5f5f5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
