@@ -592,3 +592,16 @@ button {
     font-size: 10px;
   }
 }
+
+/* Locked workflow layout */
+
+.ds-step-badge,
+.rr-step-badge,
+.gen-step,
+.rc-step {
+  margin-left: auto;
+}
+
+.rr-footer-actions {
+  margin-left: auto;
+}

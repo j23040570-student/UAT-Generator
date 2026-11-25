@@ -2,6 +2,16 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import welcomeArt from './assets/welcome-art.png'
+import GenerateTestCases from './pages/GenerateTestCases/GenerateTestCases.jsx'
+import InputRequirements from "./pages/InputRequirements/InputRequirements.jsx";
+import DetectedSentence, {
+  detectSentences
+} from "./pages/DetectedSentence/DetectedSentence.jsx";
+import ReviewRequirements from "./pages/ReviewRequirements/ReviewRequirements.jsx";
+import GeneratedTestCases, {
+  generateDraftCases
+} from "./pages/GeneratedTestCases/GeneratedTestCases.jsx";
+import RequirementCoverage from "./pages/RequirementCoverage/RequirementCoverage.jsx";
 
 const starterProjects = [
   { name: 'Student Portal System', updated: '2 days ago', tests: 20, status: 'Completed' },
@@ -374,19 +384,303 @@ function PlaceholderPage({ page, onNavigate }) {
 }
 
 export default function App() {
-  const [page, setPage] = useState('dashboard')
+  const [page, setPage] = useState("dashboard");
+
+  const [selectedProject, setSelectedProject] =
+    useState(null);
+
+
+  const activePage =
+  selectedProject && workflowPages.includes(page)
+    ? workflowPages[selectedProject.progress - 1] || page
+    : page;
+
+  /* Open existing or new project */
+
+  function openProject(project) {
+  setSelectedProject(project);
+
+  if (project.progress === 5) {
+    setPage("requirement-coverage");
+  } else if (project.progress === 4) {
+    setPage("generated-test-cases");
+  } else if (project.progress === 3) {
+    setPage("review-requirements");
+  } else if (project.progress === 2) {
+    setPage("detected-sentence");
+  } else {
+    setPage("input-requirements");
+  }
+}
+
+  /* Save project data */
+
+  function updateProject(updates) {
+  if (!selectedProject) {
+    throw new Error("No project selected.");
+  }
+
+  // Prevent users from returning to completed steps
+  if (
+    updates.progress !== undefined &&
+    updates.progress < selectedProject.progress
+  ) {
+    throw new Error(
+      "Completed steps cannot be reopened."
+    );
+  }
+
+  const updatedProject = {
+    ...selectedProject,
+    ...updates,
+    updatedAt: Date.now()
+  };
+
+  const projects = JSON.parse(
+    localStorage.getItem("uatgen_projects") || "[]"
+  );
+
+  const updatedProjects = projects.map((project) =>
+    project.id === updatedProject.id
+      ? updatedProject
+      : project
+  );
+
+  localStorage.setItem(
+    "uatgen_projects",
+    JSON.stringify(updatedProjects)
+  );
+
+  setSelectedProject(updatedProject);
+
+  return updatedProject;
+}
+
+  /* Step 1: Analyse Requirements */
+
+  function handleAnalyse(inputData) {
+    const detected = detectSentences(inputData.text);
+
+    if (detected.length === 0) {
+      throw new Error("No sentences were detected.");
+    }
+
+    updateProject({
+      requirementText: inputData.text,
+      detectedSentences: detected,
+      reviewRequirements: null,
+      step: "Detected Sentence Detail List",
+      progress: 2
+    });
+
+    setPage("detected-sentence");
+  }
+
+  /* Step 2: Save Detected Sentences */
+
+  function saveDetectedSentences(sentences) {
+    updateProject({
+      detectedSentences: sentences
+    });
+  }
+
+  /* Open Review Requirements page */
+
+  function handleReview(sentences) {
+    const originalSentences = detectSentences(
+      selectedProject.requirementText || ""
+    );
+
+    const reviewRequirements =
+      selectedProject.reviewRequirements ??
+      sentences.map((item) => ({
+        id: `requirement-${item.id}`,
+
+        description: item.sentence,
+
+        sourceId: item.id,
+
+        sourceText:
+          originalSentences.find(
+            (original) => original.id === item.id
+          )?.sentence || item.sentence,
+
+        type: item.type
+      }));
+
+    updateProject({
+      detectedSentences: sentences,
+      reviewRequirements: reviewRequirements,
+      step: "Review Requirements",
+      progress: 3
+    });
+
+    setPage("review-requirements");
+  }
+
+  /* Step 3: Save reviewed requirements */
+
+  function saveReviewRequirements(requirements) {
+    updateProject({
+      reviewRequirements: requirements,
+      step: "Review Requirements",
+      progress: 3
+    });
+  }
+  /* Step 4: Generate Test Cases */
+
+function handleGenerateTestCases(requirements) {
+  if (requirements.length === 0) return;
+
+  const signature = JSON.stringify(
+    requirements.map((item) => [
+      item.id,
+      item.displayId,
+      item.description
+    ])
+  );
+
+  const existingCases = selectedProject.testCases;
+
+  const sameRequirements =
+    selectedProject.generationSignature === signature;
+
+  // Keep previously edited and approved test cases
+  // when the reviewed requirements have not changed.
+
+  if (
+    sameRequirements &&
+    Array.isArray(existingCases)
+  ) {
+    updateProject({
+      step: "Generated Test Cases",
+      progress: 4
+    });
+
+    setPage("generated-test-cases");
+    return;
+  }
+
+  // Confirm before replacing existing test cases.
+
+  if (
+    existingCases?.length &&
+    !window.confirm(
+      "Requirements have changed. Generate new test cases and replace the previous ones?"
+    )
+  ) {
+    return;
+  }
+
+  const generatedCases =
+    generateDraftCases(requirements);
+
+  updateProject({
+    testCases: generatedCases,
+    generationSignature: signature,
+    step: "Generated Test Cases",
+    progress: 4
+  });
+
+  setPage("generated-test-cases");
+}
+
+/* Save Test Case Changes */
+
+function saveGeneratedTestCases(testCases) {
+  updateProject({
+    testCases,
+    step: "Generated Test Cases",
+    progress: 4
+  });
+}
+/* Step 5: Generate Coverage Report */
+
+function handleGenerateCoverage(testCases) {
+  updateProject({
+    testCases,
+    step: "Requirement Coverage",
+    progress: 5
+  });
+
+  setPage("requirement-coverage");
+}
 
   return (
-    <div className="app-shell">
-      <main className="dashboard-panel">
-        {page === 'dashboard' ? (
-          <Dashboard onNavigate={setPage} />
-        ) : (
-          <PlaceholderPage page={page} onNavigate={setPage} />
-        )}
-      </main>
+  <div className="app-shell">
 
-      <FloatingMenu onNavigate={setPage} page={page} />
-    </div>
-  )
+    <main className="dashboard-panel">
+
+      {activePage === "dashboard" ? (
+
+        <Dashboard onNavigate={setPage} />
+
+      ) : activePage === "generate" ? (
+
+        <GenerateTestCases
+          onNavigate={setPage}
+          onContinue={openProject}
+        />
+
+      ) : activePage === "input-requirements" ? (
+
+        <InputRequirements
+          key={selectedProject?.id}
+          project={selectedProject}
+          onNavigate={setPage}
+          onAnalyse={handleAnalyse}
+        />
+
+      ) : activePage === "detected-sentence" ? (
+
+        <DetectedSentence
+          key={selectedProject?.id}
+          project={selectedProject}
+          onSave={saveDetectedSentences}
+          onReview={handleReview}
+        />
+
+      ) : activePage === "review-requirements" ? (
+
+        <ReviewRequirements
+          key={selectedProject?.id}
+          project={selectedProject}
+          onSave={saveReviewRequirements}
+          onGenerate={handleGenerateTestCases}
+        />
+
+      ) : activePage === "generated-test-cases" ? (
+
+        <GeneratedTestCases
+          key={selectedProject?.id}
+          project={selectedProject}
+          onSave={saveGeneratedTestCases}
+          onCoverage={handleGenerateCoverage}
+        />
+
+      ) : activePage === "requirement-coverage" ? (
+
+        <RequirementCoverage
+          key={selectedProject?.id}
+          project={selectedProject}
+        />
+
+      ) : (
+
+        <PlaceholderPage
+          page={activePage}
+          onNavigate={setPage}
+        />
+
+      )}
+
+    </main>
+
+    <FloatingMenu
+      onNavigate={setPage}
+      page={activePage}
+    />
+
+  </div>
+);
 }

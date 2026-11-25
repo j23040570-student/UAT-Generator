@@ -1,0 +1,450 @@
+/* Main Page */
+
+.gtc-page,
+.gtc-page * {
+  box-sizing: border-box;
+}
+
+.gtc-page {
+  width: 100%;
+  min-height: 80vh;
+  color: #171b2b;
+}
+
+/* Header */
+
+.gtc-header {
+  margin-bottom: 5px;
+}
+
+.gtc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 26px;
+  font-weight: 750;
+  color: #3829b8;
+  margin-bottom: 10px;
+}
+
+.gtc-robot {
+  font-size: 38px;
+}
+
+.gtc-header h1 {
+  font-size: 32px;
+  font-weight: 750;
+  color: #111111;
+  margin: 0 0 10px;
+  letter-spacing: -0.65px;
+}
+
+.gtc-header p {
+  color: #8290ab;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* New Project Button */
+
+.gtc-create-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  margin-bottom: 18px;
+}
+
+.gtc-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #5551e6;
+  color: #ffffff;
+  border: 1px solid #5551e6;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.gtc-primary-button:hover {
+  background: #4540cc;
+}
+
+.gtc-primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gtc-plus {
+  font-size: 20px;
+  line-height: 16px;
+}
+
+/* Search and Sort */
+
+.gtc-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.gtc-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 220px;
+  height: 38px;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  color: #333333;
+}
+
+.gtc-search input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+}
+
+.gtc-search input::placeholder {
+  color: #a0a5b0;
+}
+
+.gtc-search:focus-within {
+  border-color: #5551e6;
+}
+
+.gtc-sort {
+  height: 38px;
+  min-width: 190px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  color: #333333;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Project Table */
+
+.gtc-table-wrapper {
+  width: 100%;
+  min-height: 380px;
+  max-height: 550px;
+  overflow: auto;
+  border: 1px solid #a5a5a5;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.gtc-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.gtc-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f5f6f8;
+}
+
+.gtc-table th {
+  padding: 18px 22px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #232838;
+}
+
+.gtc-table td {
+  padding: 20px 22px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.gtc-table th:nth-child(1) {
+  width: 29%;
+}
+
+.gtc-table th:nth-child(2) {
+  width: 27%;
+}
+
+.gtc-table th:nth-child(3) {
+  width: 16%;
+}
+
+.gtc-table th:nth-child(4) {
+  width: 28%;
+  text-align: center;
+}
+
+.gtc-table tbody tr:hover {
+  background: #faf9ff;
+}
+
+.gtc-project-name {
+  font-weight: 400;
+  color: #26324b;
+}
+
+.gtc-step-name {
+  color: #26324b;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.gtc-step-progress {
+  color: #6c7b99;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.gtc-updated {
+  color: #68799b;
+  white-space: nowrap;
+}
+
+/* Continue and Delete Buttons */
+
+.gtc-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.gtc-continue-button,
+.gtc-delete-button {
+  min-width: 115px;
+  min-height: 34px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  border-radius: 5px;
+  padding: 8px 13px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.gtc-continue-button {
+  background: #5551e6;
+  color: #ffffff;
+  border: 1px solid #5551e6;
+}
+
+.gtc-continue-button:hover {
+  background: #4540cc;
+}
+
+.gtc-continue-button span {
+  font-size: 18px;
+  line-height: 12px;
+}
+
+.gtc-delete-button {
+  background: #ffffff;
+  color: #ff3030;
+  border: 1px solid #ff3030;
+}
+
+.gtc-delete-button:hover {
+  background: #fff0f0;
+}
+
+.gtc-empty {
+  text-align: center;
+  color: #8290ab;
+  padding: 65px !important;
+}
+
+.gtc-selection-message {
+  font-size: 13px;
+  color: #68799b;
+  margin-top: 16px;
+}
+
+/* Create Project Modal */
+
+.gtc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.12);
+  padding: 20px;
+}
+
+.gtc-modal {
+  width: 460px;
+  max-width: 100%;
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 10px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  animation: gtc-modal-appear 0.2s ease-out;
+}
+
+.gtc-modal h2 {
+  color: #111111;
+  font-size: 25px;
+  font-weight: 750;
+  margin: 0 0 22px;
+}
+
+.gtc-modal label {
+  display: block;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 650;
+  margin-bottom: 10px;
+}
+
+.gtc-required {
+  color: #ff3030;
+  margin-left: 2px;
+}
+
+.gtc-project-input {
+  width: 100%;
+  height: 42px;
+  padding: 10px 14px;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  outline: none;
+  background: white;
+  font-size: 13px;
+  color: #26324b;
+}
+
+.gtc-project-input:focus {
+  border-color: #5551e6;
+  box-shadow: 0 0 0 2px rgba(85, 81, 230, 0.1);
+}
+
+.gtc-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.gtc-cancel-button {
+  background: #ffffff;
+  color: #444444;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  padding: 10px 24px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.gtc-cancel-button:hover {
+  background: #f3f4f6;
+}
+
+/* Delete Confirmation Modal */
+
+.gtc-delete-message {
+  color: #64718b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.gtc-confirm-delete {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 11px 18px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.gtc-confirm-delete:hover {
+  background: #dc2626;
+}
+
+/* Scrollbar */
+
+.gtc-table-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.gtc-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 8px;
+}
+
+.gtc-table-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+/* Modal Animation */
+
+@keyframes gtc-modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Layout */
+
+@media (max-width: 768px) {
+  .gtc-header h1 {
+    font-size: 26px;
+  }
+
+  .gtc-brand {
+    font-size: 22px;
+  }
+
+  .gtc-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .gtc-search,
+  .gtc-sort {
+    width: 100%;
+  }
+
+  .gtc-create-row {
+    margin-top: 20px;
+  }
+
+  .gtc-table-wrapper {
+    min-height: 300px;
+  }
+
+  .gtc-modal {
+    padding: 20px;
+  }
+}  
