@@ -383,6 +383,14 @@ function PlaceholderPage({ page, onNavigate }) {
   )
 }
 
+const workflowPages = [
+  "input-requirements",
+  "detected-sentence",
+  "review-requirements",
+  "generated-test-cases",
+  "requirement-coverage"
+];
+
 export default function App() {
   const [page, setPage] = useState("dashboard");
 
