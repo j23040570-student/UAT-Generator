@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./GenerateTestCases.css";
 
-const starterProjects = [
+export const starterProjects = [
   {
     id: 1,
     name: "Library Management System",
@@ -82,6 +82,7 @@ export default function GenerateTestCases({
     name: projectName.trim(),
     step: "Input Requirements",
     progress: 1,
+    createdAt: Date.now(),
     updatedAt: Date.now(),
   };
 

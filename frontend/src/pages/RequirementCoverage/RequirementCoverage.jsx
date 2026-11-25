@@ -99,7 +99,7 @@ function CoverageStatus({ status }) {
 
 export default function RequirementCoverage({
   project,
-  onBack
+  navigation
 }) {
   const [view, setView] = useState("report");
 
@@ -431,27 +431,33 @@ export default function RequirementCoverage({
   return (
     <div className="rc-page">
 
-      <div className="rc-top">
+      {!navigation && (
+  <div className="rc-top">
+    <span className="rc-step">
+      STEP 5 OF 5
+    </span>
+  </div>
+)}
 
-        <span className="rc-step">
-          STEP 5 OF 5
-        </span>
+      {!navigation && (
+  <>
+    <Brand />
 
-      </div>
+    <h1>Coverage Report</h1>
 
-      <Brand />
+    <p className="rc-subtitle">
+      View the coverage of test cases against your requirements.
+    </p>
 
-      <h1>Coverage Report</h1>
-
-      <p className="rc-subtitle">
-        View the coverage of test cases against your requirements.
+    {project && (
+      <p className="rc-project-name">
+        Project: <strong>{project.name}</strong>
       </p>
+    )}
+  </>
+)}
 
-      {project && (
-        <p className="rc-project-name">
-          Project: <strong>{project.name}</strong>
-        </p>
-      )}
+{navigation}
 
       <div className="rc-export-row">
 

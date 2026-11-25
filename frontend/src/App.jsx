@@ -12,6 +12,7 @@ import GeneratedTestCases, {
   generateDraftCases
 } from "./pages/GeneratedTestCases/GeneratedTestCases.jsx";
 import RequirementCoverage from "./pages/RequirementCoverage/RequirementCoverage.jsx";
+import MyProjects from "./pages/MyProjects/MyProjects.jsx";
 
 const starterProjects = [
   { name: 'Student Portal System', updated: '2 days ago', tests: 20, status: 'Completed' },
@@ -625,12 +626,18 @@ function handleGenerateCoverage(testCases) {
 
       ) : activePage === "generate" ? (
 
-        <GenerateTestCases
-          onNavigate={setPage}
-          onContinue={openProject}
-        />
+  <GenerateTestCases
+    onNavigate={setPage}
+    onContinue={openProject}
+  />
 
-      ) : activePage === "input-requirements" ? (
+) : activePage === "projects" ? (
+
+  <MyProjects
+    onContinue={openProject}
+  />
+
+) : activePage === "input-requirements" ? (
 
         <InputRequirements
           key={selectedProject?.id}
