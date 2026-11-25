@@ -18,9 +18,10 @@ button {
 .dashboard-panel {
   background: #ffffff;
   width: 100%;
+  max-width: 1440px;
   min-height: 100vh;
-  margin: 0;
-  padding: 35px 5%;
+  margin: 0 auto;
+  padding: 35px clamp(24px, 5vw, 80px);
 }
 
 
@@ -398,7 +399,7 @@ button {
 
 @media (max-width: 620px) {
   .app-shell {
-    padding: 20px 12px 80px;
+    padding: 0 0 80px;
   }
 
   .dashboard-panel {
@@ -440,7 +441,7 @@ button {
 /* Full-screen Dashboard adjustments */
 
 .page-heading {
-  font-size: 30px;
+  font-size: 32px;
   margin-bottom: 22px;
 }
 
@@ -451,11 +452,11 @@ button {
 }
 
 .welcome-copy h2 {
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .welcome-copy p {
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 10px;
 }
 
@@ -474,13 +475,20 @@ button {
   padding: 20px;
 }
 
+.stat-card > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
 .stat-card strong {
-  font-size: 26px;
-  line-height: 30px;
+  font-size: 28px;
+  line-height: 32px;
 }
 
 .stat-card small {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .stat-icon {
@@ -494,19 +502,39 @@ button {
 }
 
 .section-heading h2 {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .view-all {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .projects-table {
-  font-size: 14px;
+  font-size: 15px;
+}
+
+.projects-table th:nth-child(1),
+.projects-table td:nth-child(1) {
+  width: 40%;
+}
+
+.projects-table th:nth-child(2),
+.projects-table td:nth-child(2) {
+  width: 24%;
+}
+
+.projects-table th:nth-child(3),
+.projects-table td:nth-child(3) {
+  width: 18%;
+}
+
+.projects-table th:nth-child(4),
+.projects-table td:nth-child(4) {
+  width: 18%;
 }
 
 .projects-table th {
-  font-size: 13px;
+  font-size: 14px;
   padding: 16px 20px;
 }
 
@@ -515,13 +543,17 @@ button {
 }
 
 .status-pill {
-  font-size: 12px;
+  font-size: 13px;
   padding: 6px 12px;
 }
 
 @media (max-width: 620px) {
   .dashboard-panel {
     padding: 20px 16px;
+  }
+
+  .page-heading {
+    font-size: 26px;
   }
 
   .welcome-banner {
@@ -534,7 +566,7 @@ button {
   }
 
   .welcome-copy p {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .welcome-art {
@@ -553,10 +585,10 @@ button {
   }
 
   .stat-card strong {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .stat-card small {
-    font-size: 9px;
+    font-size: 10px;
   }
 }
