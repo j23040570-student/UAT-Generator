@@ -1,0 +1,49 @@
+.st-page { color: #151d38; width: 100%; }
+.st-banner { display: flex; align-items: center; justify-content: space-between; min-height: 145px; gap: 20px; padding: 24px 30px; background: linear-gradient(105deg, #f2efff, #eae5fc); border-radius: 12px; overflow: hidden; }
+.st-banner h2 { color: #4630f2; font-size: 25px; margin: 0 0 10px; font-weight: 750; }
+.st-banner p { font-size: 16px; color: #34416a; margin: 0; line-height: 1.5; }
+.st-art { width: 260px; max-width: 38%; height: auto; flex-shrink: 0; align-self: end; margin: -14px 0 -20px; }
+.st-options { border: 1px solid #e3e1fa; border-radius: 12px; padding: 0 30px; margin-top: 25px; background: #fff; }
+.st-option { width: 100%; display: flex; align-items: center; text-align: left; gap: 24px; background: transparent; border: 0; color: #25245c; padding: 17px 0; min-height: 92px; }
+.st-option + .st-option { border-top: 1px solid #eeebfb; }
+.st-icon { width: 60px; height: 60px; border-radius: 12px; display: grid; place-items: center; background: #efebff; flex: none; }
+.st-copy { display: flex; flex-direction: column; flex: 1; gap: 5px; }
+.st-copy strong { font-size: 18px; color: #15192c; font-weight: 700; }
+.st-copy small { font-size: 15px; color: #435477; }
+.st-option:hover .st-copy strong { color: #5551e6; }
+.st-logout { display: flex; align-items: center; gap: 24px; width: 100%; padding: 17px 38px; border: 1px solid #e3e1fa; border-radius: 12px; color: #ef3434; background: #fff; margin-top: 25px; text-align: left; font-size: 18px; }
+.st-logout:hover { background: #fff5f5; }
+.st-option:focus-visible, .st-logout:focus-visible, .st-dialog button:focus-visible { outline: 2px solid #5551e6; outline-offset: 3px; }
+.st-success, .st-error { padding: 12px 15px; font-size: 14px; border-radius: 7px; line-height: 1.5; }
+.st-success { background: #e4f7ed; color: #147747; margin: 18px 0 0; }
+.st-error { background: #fff0f0; color: #b42323; margin: 0; }
+.st-dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); border: 0; border-radius: 16px; padding: 0; margin: auto; background: #fff; color: #151d38; box-shadow: 0 20px 70px #15163833; overflow: auto; }
+.st-dialog::backdrop { background: rgba(24, 28, 53, .42); backdrop-filter: blur(3px); }
+.st-dialog-content { display: flex; flex-direction: column; padding: 28px; gap: 18px; }
+.st-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.st-dialog-heading h2 { font-size: 23px; margin: 0; }
+.st-close { border: 0; background: transparent; color: #667085; display: grid; place-items: center; padding: 6px; }
+.st-dialog label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 600; }
+.st-dialog input { width: 100%; box-sizing: border-box; border: 1px solid #d4d9e8; border-radius: 8px; padding: 12px; font: inherit; font-weight: 400; color: #151d38; background: #fff; }
+.st-dialog input:focus { outline: 2px solid #aaa5ff; border-color: #5551e6; }
+.st-dialog label small { font-size: 12px; font-weight: 400; color: #65718a; }
+.st-current-email, .st-dialog-content > p:not(.st-error) { margin: 0; color: #65718a; font-size: 14px; overflow-wrap: anywhere; }
+.st-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px; }
+.st-cancel, .st-confirm { border-radius: 7px; padding: 11px 19px; font-size: 14px; font-weight: 600; }
+.st-cancel { color: #48536b; background: #fff; border: 1px solid #d4d9e8; }
+.st-confirm { color: #fff; background: #5551e6; border: 1px solid #5551e6; }
+.st-confirm.st-danger { background: #e63838; border-color: #e63838; }
+.st-dialog button:disabled { opacity: .6; cursor: not-allowed; }
+@media (max-width: 620px) {
+  .st-banner { min-height: 100px; padding: 15px; gap: 6px; }
+  .st-banner h2 { font-size: 20px; }
+  .st-banner p { font-size: 13px; }
+  .st-art { width: 125px; margin: 0 0 -12px; }
+  .st-options { padding: 0 14px; margin-top: 18px; }
+  .st-option { gap: 12px; min-height: 80px; padding: 12px 0; }
+  .st-icon { width: 44px; height: 44px; }
+  .st-copy strong { font-size: 15px; }
+  .st-copy small { font-size: 12px; }
+  .st-logout { padding: 14px 20px; gap: 12px; font-size: 16px; margin-top: 18px; }
+  .st-dialog-content { padding: 20px; }
+}

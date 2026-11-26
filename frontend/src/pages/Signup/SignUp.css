@@ -1,0 +1,161 @@
+/* Sign Up Header */
+
+.signup-title {
+  margin-bottom: 10px;
+}
+
+.signup-subtitle {
+  color: #747d90;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+
+/* Sign Up Form */
+
+.signup-form {
+  gap: 18px;
+}
+
+.signup-form .auth-input-group {
+  min-height: 60px;
+}
+
+.signup-form .auth-input-group input {
+  font-size: 18px;
+}
+
+.signup-password-hint {
+  display: block;
+  color: #747d90;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* Terms and Conditions */
+
+.signup-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #747d90;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.signup-terms input {
+  width: 19px;
+  height: 19px;
+  margin: 0;
+  accent-color: #5551e6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.signup-terms .auth-link {
+  font-size: 13px;
+}
+
+/* Create Account Button */
+
+.signup-submit {
+  background: linear-gradient(
+    100deg,
+    #5551d5,
+    #8b56f5
+  );
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(85, 81, 213, 0.25);
+}
+
+.signup-submit:hover:not(:disabled) {
+  background: linear-gradient(
+    100deg,
+    #4540c0,
+    #7545df
+  );
+}
+
+/* Decorative Circles */
+
+.auth-decoration {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.circle-one {
+  width: 160px;
+  height: 160px;
+  top: 7%;
+  right: 2%;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.circle-two {
+  width: 25px;
+  height: 25px;
+  top: 16%;
+  left: 10%;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.circle-three {
+  width: 100px;
+  height: 100px;
+  bottom: 15%;
+  left: 7%;
+  background: rgba(221, 105, 204, 0.45);
+}
+
+.circle-four {
+  width: 65px;
+  height: 65px;
+  bottom: 16%;
+  right: 8%;
+  background: rgba(80, 190, 239, 0.42);
+}
+
+.circle-five {
+  width: 20px;
+  height: 20px;
+  top: 55%;
+  right: 12%;
+  background: rgba(250, 207, 105, 0.65);
+}
+
+/* Responsive */
+
+@media (max-width: 650px) {
+  .signup-form {
+    gap: 15px;
+  }
+
+  .signup-form .auth-input-group {
+    min-height: 55px;
+  }
+
+  .signup-form .auth-input-group input {
+    font-size: 16px;
+  }
+
+  .signup-subtitle {
+    font-size: 13px;
+  }
+
+  .circle-one {
+    width: 90px;
+    height: 90px;
+  }
+
+  .circle-three {
+    width: 60px;
+    height: 60px;
+  }
+
+  .circle-four {
+    width: 45px;
+    height: 45px;
+  }
+}

@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import welcomeArt from './assets/welcome-art.png'
@@ -13,7 +12,15 @@ import GeneratedTestCases, {
 } from "./pages/GeneratedTestCases/GeneratedTestCases.jsx";
 import RequirementCoverage from "./pages/RequirementCoverage/RequirementCoverage.jsx";
 import MyProjects from "./pages/MyProjects/MyProjects.jsx";
+import Settings from "./pages/Settings/Settings.jsx";
+import Login from "./pages/Login/Login.jsx";
+import SignUp from "./pages/Signup/SignUp.jsx";
 
+import {
+  getCurrentUser,
+  getAccountProfile,
+  logoutAccount
+} from "./utils/demoAuth.js";
 const starterProjects = [
   { name: 'Student Portal System', updated: '2 days ago', tests: 20, status: 'Completed' },
   { name: 'Library Management System', updated: '5 days ago', tests: 15, status: 'In Progress' },
@@ -222,14 +229,36 @@ const handleHomeDoubleClick = () => {
   )
 }
 
-function Dashboard({ onNavigate }) {
+function Dashboard({ onNavigate, user, onLogin, onSignUp, onLogout }) {
+  const displayName = user ? getAccountProfile(user)?.displayName || user.split("@")[0] : "Guest";
   return (
     <>
-      <h1 className="page-heading">Dashboard</h1>
+      <div className="dashboard-header">
+        <h1 className="page-heading">Dashboard</h1>
+        <div className="dashboard-auth-actions">
+          {user ? (
+            <>
+              <span className="dashboard-user">{user}</span>
+              <button type="button" className="dashboard-login-button" onClick={onLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" className="dashboard-login-button" onClick={onLogin}>
+                Login
+              </button>
+              <button type="button" className="dashboard-signup-button" onClick={onSignUp}>
+                Sign Up
+              </button>
+            </>
+          )}
+        </div>
+      </div>
 
       <section className="welcome-banner">
         <div className="welcome-copy">
-          <h2>Welcome, Test User 👋</h2>
+          <h2>Welcome, {displayName} 👋</h2>
           <p>
             Generate UAT test cases from your
             <br />
@@ -250,7 +279,7 @@ function Dashboard({ onNavigate }) {
             <Icon name="folder" />
           </span>
           <div>
-            <strong>3</strong>
+            <strong>{user ? 3 : 0}</strong>
             <small>Projects</small>
           </div>
         </article>
@@ -260,7 +289,7 @@ function Dashboard({ onNavigate }) {
             <Icon name="file" />
           </span>
           <div>
-            <strong>12</strong>
+            <strong>{user ? 12 : 0}</strong>
             <small>Requirements</small>
           </div>
         </article>
@@ -270,7 +299,7 @@ function Dashboard({ onNavigate }) {
             <Icon name="check" />
           </span>
           <div>
-            <strong>48</strong>
+            <strong>{user ? 48 : 0}</strong>
             <small>Test Cases</small>
           </div>
         </article>
@@ -288,6 +317,7 @@ function Dashboard({ onNavigate }) {
         </button>
       </div>
 
+      {user ? (
       <div className="projects-table-wrap">
         <table className="projects-table">
           <thead>
@@ -321,6 +351,15 @@ function Dashboard({ onNavigate }) {
           </tbody>
         </table>
       </div>
+      ) : (
+        <div className="guest-projects">
+          <h3>Get Started with UATGen AI</h3>
+          <p>Log in or create an account to generate test cases and manage your projects.</p>
+          <button type="button" className="dashboard-signup-button" onClick={() => onNavigate("generate")}>
+            Generate Test Cases
+          </button>
+        </div>
+      )}
     </>
   )
 }
@@ -392,9 +431,61 @@ const workflowPages = [
   "requirement-coverage"
 ];
 
+const protectedPages = ["generate", "projects", "settings", ...workflowPages];
+
+/* Shared Login / Sign Up popup */
+function AuthPopup({ children, onClose, mode }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    if (!dialog.open) dialog.showModal();
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      if (dialog.open) dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="uat-auth-modal"
+      aria-label={mode === "signup" ? "Create account" : "Login"}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div className="uat-auth-modal-content">
+        <button
+          type="button"
+          className="uat-auth-modal-close"
+          onClick={onClose}
+          aria-label="Close authentication popup"
+          title="Close"
+        >
+          ×
+        </button>
+        {children}
+      </div>
+    </dialog>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState("dashboard");
+  const [user, setUser] = useState(getCurrentUser);
 
+  const [authNotice, setAuthNotice] = useState("");
+  const [authModal, setAuthModal] = useState(null);
+
+  const [redirectPage, setRedirectPage] = useState("dashboard");
   const [selectedProject, setSelectedProject] =
     useState(null);
 
@@ -404,9 +495,65 @@ export default function App() {
     ? workflowPages[selectedProject.progress - 1] || page
     : page;
 
+  /* Guest access and authentication */
+
+  function handleNavigate(targetPage) {
+    if (!user && protectedPages.includes(targetPage)) {
+      setRedirectPage(targetPage);
+      setAuthNotice("Please log in to access this feature.");
+      setAuthModal("login");
+      return;
+    }
+    setPage(targetPage);
+  }
+
+  function openLogin() {
+    setRedirectPage("dashboard");
+    setAuthNotice("");
+    setAuthModal("login");
+  }
+
+  function openSignUp() {
+    setRedirectPage("dashboard");
+    setAuthNotice("");
+    setAuthModal("signup");
+  }
+
+  function closeAuth() {
+    setAuthModal(null);
+    setAuthNotice("");
+    setRedirectPage("dashboard");
+  }
+
+  function handleLogin(email) {
+    setUser(email);
+    setSelectedProject(null);
+    setPage(["generate", "projects", "settings"].includes(redirectPage)
+      ? redirectPage
+      : "dashboard");
+    closeAuth();
+  }
+
+  function handleRegistered() {
+    setAuthNotice("Account created successfully. Please log in.");
+    setAuthModal("login");
+  }
+
+  function handleLogout() {
+    logoutAccount();
+    setUser(null);
+    setSelectedProject(null);
+    closeAuth();
+    setPage("dashboard");
+  }
+
   /* Open existing or new project */
 
   function openProject(project) {
+  if (!user) {
+    handleNavigate("generate");
+    return;
+  }
   setSelectedProject(project);
 
   if (project.progress === 5) {
@@ -425,6 +572,9 @@ export default function App() {
   /* Save project data */
 
   function updateProject(updates) {
+  if (!user) {
+    throw new Error("Please log in.");
+  }
   if (!selectedProject) {
     throw new Error("No project selected.");
   }
@@ -622,12 +772,18 @@ function handleGenerateCoverage(testCases) {
 
       {activePage === "dashboard" ? (
 
-        <Dashboard onNavigate={setPage} />
+        <Dashboard
+          onNavigate={handleNavigate}
+          user={user}
+          onLogin={openLogin}
+          onSignUp={openSignUp}
+          onLogout={handleLogout}
+        />
 
       ) : activePage === "generate" ? (
 
   <GenerateTestCases
-    onNavigate={setPage}
+    onNavigate={handleNavigate}
     onContinue={openProject}
   />
 
@@ -642,7 +798,7 @@ function handleGenerateCoverage(testCases) {
         <InputRequirements
           key={selectedProject?.id}
           project={selectedProject}
-          onNavigate={setPage}
+          onNavigate={handleNavigate}
           onAnalyse={handleAnalyse}
         />
 
@@ -680,11 +836,19 @@ function handleGenerateCoverage(testCases) {
           project={selectedProject}
         />
 
+      ) : activePage === "settings" ? (
+
+        <Settings
+          user={user}
+          onAccountUpdated={(profile) => setUser(profile.email)}
+          onLogout={handleLogout}
+        />
+
       ) : (
 
         <PlaceholderPage
           page={activePage}
-          onNavigate={setPage}
+          onNavigate={handleNavigate}
         />
 
       )}
@@ -692,9 +856,34 @@ function handleGenerateCoverage(testCases) {
     </main>
 
     <FloatingMenu
-      onNavigate={setPage}
+      onNavigate={handleNavigate}
       page={activePage}
     />
+
+    {!user && authModal && (
+      <AuthPopup mode={authModal} onClose={closeAuth}>
+        {authModal === "signup" ? (
+          <SignUp
+            onLogin={() => {
+              setAuthNotice("");
+              setAuthModal("login");
+            }}
+            onRegistered={handleRegistered}
+            onBack={closeAuth}
+          />
+        ) : (
+          <Login
+            notice={authNotice}
+            onLogin={handleLogin}
+            onSignUp={() => {
+              setAuthNotice("");
+              setAuthModal("signup");
+            }}
+            onBack={closeAuth}
+          />
+        )}
+      </AuthPopup>
+    )}
 
   </div>
 );
